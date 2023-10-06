@@ -1,6 +1,7 @@
 package kamal.aishwarya.weather.ui.weather
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,13 +10,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -23,6 +27,7 @@ import coil.compose.AsyncImage
 import kamal.aishwarya.weather.R
 import kamal.aishwarya.weather.data.model.WeatherResponse
 import kamal.aishwarya.weather.model.Weather
+import kamal.aishwarya.weather.ui.theme.WeatherTheme
 import kamal.aishwarya.weather.ui.weather.common.WeatherComponent
 
 @Composable
@@ -31,13 +36,27 @@ fun WeatherScreen(
     viewModel: WeatherViewModel = hiltViewModel(),
 ) {
     val uiState: WeatherUiState by viewModel.uiState
-    WeatherScreenContent(uiState.weather, modifier)
+    WeatherScreenContent(uiState, modifier)
 }
 
 @Composable
 fun WeatherScreenContent(
-    weather: Weather?,
+    uiState: WeatherUiState,
     modifier: Modifier = Modifier,
+) {
+    when {
+        uiState.isLoading -> { WeatherLoadingState() }
+        uiState.errorMessage.isNotEmpty() -> { Text(text = "Something went wrong!") }
+        else -> {
+            WeatherSuccessState(modifier = modifier, uiState = uiState)
+        }
+    }
+}
+
+@Composable
+private fun WeatherSuccessState(
+    modifier: Modifier,
+    uiState: WeatherUiState,
 ) {
     Column(
         modifier = modifier
@@ -46,24 +65,33 @@ fun WeatherScreenContent(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = weather?.name.orEmpty(),
+            text = uiState.weather?.name.orEmpty(),
             style = MaterialTheme.typography.headlineLarge
         )
         Spacer(Modifier.height(8.dp))
 
         AsyncImage(
             modifier = Modifier.size(44.dp),
-            model = "https:${weather?.condition?.icon}",
+            model = stringResource(
+                R.string.icon_url,
+                uiState.weather?.condition?.icon.toString()
+            ),
             contentDescription = null,
             error = painterResource(id = R.drawable.ic_placeholder),
             placeholder = painterResource(id = R.drawable.ic_placeholder),
         )
         Text(
-            text = "${weather?.temperature.toString()}°C",
+            text = stringResource(
+                R.string.temperature_value_in_celsius,
+                uiState.weather?.temperature.toString()
+            ),
             style = MaterialTheme.typography.headlineMedium
         )
         Text(
-            text = "Feels like ${weather?.feelsLike.toString()}°C",
+            text = stringResource(
+                R.string.feels_like_temperature_in_celsius,
+                uiState.weather?.feelsLike.toString()
+            ),
             style = MaterialTheme.typography.bodyMedium
         )
         Spacer(Modifier.height(32.dp))
@@ -73,40 +101,62 @@ fun WeatherScreenContent(
         ) {
             WeatherComponent(
                 modifier = Modifier.weight(1f),
-                weatherValue = weather?.wind.toString(),
-                weatherUnit = "km/h",
+                weatherValue = uiState.weather?.wind.toString(),
+                weatherUnit = stringResource(R.string.kilometer_per_hour),
                 iconId = R.drawable.ic_wind,
             )
             WeatherComponent(
                 modifier = Modifier.weight(1f),
-                weatherValue = weather?.uv.toString(),
-                weatherUnit = "uv index",
+                weatherValue = uiState.weather?.uv.toString(),
+                weatherUnit = stringResource(R.string.uv_index),
                 iconId = R.drawable.ic_uv,
             )
             WeatherComponent(
                 modifier = Modifier.weight(1f),
-                weatherValue = weather?.humidity.toString(),
-                weatherUnit = "percentage %",
+                weatherValue = uiState.weather?.humidity.toString(),
+                weatherUnit = stringResource(R.string.percentage),
                 iconId = R.drawable.ic_humidity,
             )
-
         }
     }
 }
 
-@Preview(showBackground = true)
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun WeatherLoadingState() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator()
+    }
+}
+
+@Preview(name = "Light Mode", showBackground = true, showSystemUi = true)
+@Preview(
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showSystemUi = true,
+    showBackground = true
+)
 @Composable
 fun WeatherScreenContentPreview() {
-    WeatherScreenContent(
-        Weather(
-            25,
-            22,
-            35,
-            23,
-            WeatherResponse.NetworkCurrentWeather.Condition(10, "", ""),
-            3,
-            "Munich"
-        )
-    )
+    WeatherTheme {
+        Surface {
+            WeatherScreenContent(
+                WeatherUiState(
+                    weather = Weather(
+                        25,
+                        22,
+                        35,
+                        23,
+                        WeatherResponse.NetworkCurrentWeather.Condition(10, "", ""),
+                        6,
+                        "Munich"
+                    )
+                )
+            )
+        }
+    }
 }

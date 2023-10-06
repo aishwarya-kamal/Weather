@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Weather</string>
+    <string name="kilometer_per_hour">km/h</string>
+    <string name="uv_index">uv index</string>
+    <string name="percentage">percentage %</string>
+    <string name="feels_like_temperature_in_celsius">Feels like %1$s°C</string>
+    <string name="temperature_value_in_celsius">%1$s°C</string>
+    <string name="icon_url">https:%1$s</string>
 </resources>
