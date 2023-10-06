@@ -2,7 +2,6 @@ package kamal.aishwarya.weather.data.model
 
 
 import com.google.gson.annotations.SerializedName
-import kamal.aishwarya.weather.data.model.WeatherResponse.NetworkCurrentWeather
 import kamal.aishwarya.weather.model.Weather
 
 data class WeatherResponse(
@@ -53,11 +52,12 @@ data class WeatherResponse(
     )
 }
 
-fun NetworkCurrentWeather.toWeather() : Weather = Weather(
-    temperature = tempC,
-    wind = windKph,
-    humidity = humidity,
-    feelslikeC = feelslikeC,
-    condition = condition,
-    uv = uv,
+fun WeatherResponse.toWeather() : Weather = Weather(
+    temperature = current.tempC,
+    wind = current.windKph,
+    humidity = current.humidity,
+    feelslikeC = current.feelslikeC,
+    condition = current.condition,
+    uv = current.uv,
+    name = location.name,
 )
