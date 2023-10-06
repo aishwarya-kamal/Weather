@@ -53,11 +53,11 @@ data class WeatherResponse(
 }
 
 fun WeatherResponse.toWeather() : Weather = Weather(
-    temperature = current.tempC,
-    wind = current.windKph,
+    temperature = current.tempC.toInt(),
+    wind = current.windKph.toInt(),
     humidity = current.humidity,
-    feelslikeC = current.feelslikeC,
+    feelsLike = current.feelslikeC.toInt(),
     condition = current.condition,
-    uv = current.uv,
+    uv = current.uv.toInt(),
     name = location.name,
 )
