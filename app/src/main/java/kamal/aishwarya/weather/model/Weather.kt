@@ -9,4 +9,5 @@ data class Weather(
     val feelslikeC: Double,
     val condition: Condition,
     val uv: Double,
+    val name: String,
 )
