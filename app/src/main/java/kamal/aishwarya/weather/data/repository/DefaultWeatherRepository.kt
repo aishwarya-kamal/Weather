@@ -7,6 +7,8 @@ import kamal.aishwarya.weather.utils.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
+import timber.log.Timber
+import java.io.IOException
 import javax.inject.Inject
 
 class DefaultWeatherRepository @Inject constructor(
@@ -15,8 +17,12 @@ class DefaultWeatherRepository @Inject constructor(
     override fun getWeather(): Flow<Result<Weather>> = flow {
         emit(Result.Loading)
         try {
-            emit(Result.Success(weatherApi.getWeather().current.toWeather()))
+            emit(Result.Success(weatherApi.getWeather().toWeather()))
         } catch (exception: HttpException) {
+            emit(Result.Error(exception))
+        } catch (exception: IOException) {
+            emit(Result.Error(exception))
+        } catch (exception: Exception) {
             emit(Result.Error(exception))
         }
     }
