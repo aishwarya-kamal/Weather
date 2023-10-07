@@ -29,8 +29,7 @@ fun HourlyComponent(
     temperature: String,
 ) {
     ElevatedCard(
-        modifier = modifier
-            .padding(end = 16.dp),
+        modifier = modifier.padding(end = 12.dp),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
         ),
@@ -38,18 +37,17 @@ fun HourlyComponent(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 12.dp),
+                .padding(vertical = 12.dp, horizontal = 4.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
             Text(
-                modifier = Modifier.padding(start = 4.dp, end = 4.dp, bottom = 4.dp),
                 text = time.substring(11, 13),
-                style = MaterialTheme.typography.titleSmall
+                style = MaterialTheme.typography.titleMedium,
             )
             AsyncImage(
                 modifier = Modifier.size(42.dp),
-                model = stringResource(R.string.hourly_weather_icon, icon),
+                model = stringResource(R.string.icon_image_url, icon),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 error = painterResource(id = R.drawable.ic_placeholder),
@@ -58,7 +56,7 @@ fun HourlyComponent(
                 )
             Text(
                 text = temperature,
-                style = MaterialTheme.typography.bodySmall
+                style = MaterialTheme.typography.bodyMedium,
             )
         }
     }
