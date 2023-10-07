@@ -39,6 +39,7 @@ import kamal.aishwarya.weather.ui.theme.WeatherTheme
 import kamal.aishwarya.weather.ui.weather.components.ForecastComponent
 import kamal.aishwarya.weather.ui.weather.components.HourlyComponent
 import kamal.aishwarya.weather.ui.weather.components.WeatherComponent
+import kamal.aishwarya.weather.utils.toFormattedDate
 import java.util.Locale
 
 @Composable
@@ -85,13 +86,17 @@ private fun WeatherSuccessState(
             text = uiState.weather?.name.orEmpty(),
             style = MaterialTheme.typography.headlineLarge
         )
+        Text(
+            text = uiState.weather?.date?.toFormattedDate().orEmpty(),
+            style = MaterialTheme.typography.bodyLarge
+        )
         Spacer(Modifier.height(8.dp))
 
         AsyncImage(
             modifier = Modifier.size(64.dp),
             model = stringResource(
-                R.string.icon_url,
-                uiState.weather?.condition?.icon.orEmpty()
+                R.string.icon_image_url,
+                uiState.weather?.condition?.icon.orEmpty(),
             ),
             contentDescription = null,
             error = painterResource(id = R.drawable.ic_placeholder),
@@ -106,7 +111,7 @@ private fun WeatherSuccessState(
             fontWeight = FontWeight.Bold,
         )
         Text(
-            modifier = Modifier.padding(start = 12.dp, end = 12.dp, bottom = 4.dp),
+            modifier = Modifier.padding(start = 12.dp, end = 12.dp),
             text = uiState.weather?.condition?.text.orEmpty(),
             style = MaterialTheme.typography.bodyMedium,
         )
@@ -180,7 +185,10 @@ private fun WeatherSuccessState(
                     HourlyComponent(
                         time = hour.time,
                         icon = hour.icon,
-                        temperature = stringResource(R.string.hour_temperature, hour.temperature)
+                        temperature = stringResource(
+                            R.string.temperature_value_in_celsius,
+                            hour.temperature,
+                        )
                     )
                 }
             }
@@ -188,20 +196,28 @@ private fun WeatherSuccessState(
 
         Spacer(Modifier.height(32.dp))
         Text(
-            text = "Next days",
+            text = "10-days Forecast",
             style = MaterialTheme.typography.bodyMedium,
             modifier = modifier.align(Alignment.Start),
         )
-        Spacer(modifier = Modifier.height(12.dp))
 
-        LazyRow {
+        LazyRow(
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(top = 8.dp),
+        ) {
             uiState.weather?.let { weather ->
                 items(weather.forecasts) { forecast ->
                     ForecastComponent(
                         date = forecast.date,
                         icon = forecast.icon,
-                        minTemp = forecast.minTemp,
-                        maxTemp = forecast.maxTemp,
+                        minTemp = stringResource(
+                            R.string.temperature_value_in_celsius,
+                            forecast.minTemp
+                        ),
+                        maxTemp = stringResource(
+                            R.string.temperature_value_in_celsius,
+                            forecast.maxTemp,
+                        ),
                     )
                 }
             }
@@ -227,7 +243,7 @@ private fun WeatherLoadingState() {
     name = "Dark Mode",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showSystemUi = true,
-    showBackground = true
+    showBackground = true,
 )
 @Composable
 fun WeatherScreenContentPreview() {
@@ -237,6 +253,7 @@ fun WeatherScreenContentPreview() {
                 WeatherUiState(
                     weather = Weather(
                         25,
+                        "Oct 7",
                         22,
                         35,
                         23,
@@ -244,7 +261,7 @@ fun WeatherScreenContentPreview() {
                         6,
                         "Munich",
                         listOf(
-                            Forecast("07/10", "26", "11", "06:30 am", "06:22 pm", "", emptyList()),
+                            Forecast("07/10",  "26", "11", "06:30 am", "06:22 pm", "", emptyList()),
                             Forecast("08/10", "23", "9", "06:35 am", "06:28 pm", "", emptyList()),
                             Forecast("09/10", "22", "10", "06:40 am", "06:32 pm", "", emptyList()),
                         )

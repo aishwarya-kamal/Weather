@@ -152,6 +152,7 @@ data class ForecastResponse(
 
 fun ForecastResponse.toWeather() : Weather = Weather(
     temperature = current.tempC.toInt(),
+    date = forecast.forecastday[0].date,
     wind = current.windKph.toInt(),
     humidity = current.humidity,
     feelsLike = current.feelslikeC.toInt(),
