@@ -1,6 +1,7 @@
 package kamal.aishwarya.weather.data.repository
 
 import kamal.aishwarya.weather.data.model.toWeather
+import kamal.aishwarya.weather.data.model.toWeatherForecast
 import kamal.aishwarya.weather.data.network.WeatherApi
 import kamal.aishwarya.weather.model.Weather
 import kamal.aishwarya.weather.utils.Result
@@ -14,10 +15,11 @@ import javax.inject.Inject
 class DefaultWeatherRepository @Inject constructor(
     private val weatherApi: WeatherApi,
 ) : WeatherRepository {
-    override fun getWeather(): Flow<Result<Weather>> = flow {
+    override fun getWeatherForecast(): Flow<Result<Weather>> = flow {
         emit(Result.Loading)
         try {
-            emit(Result.Success(weatherApi.getWeather().toWeather()))
+            val result = weatherApi.getWeatherForecast().toWeather()
+            emit(Result.Success(result))
         } catch (exception: HttpException) {
             emit(Result.Error(exception))
         } catch (exception: IOException) {
