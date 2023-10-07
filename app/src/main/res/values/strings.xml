@@ -1,11 +1,14 @@
 <resources>
     <string name="app_name">Weather</string>
-    <string name="kilometer_per_hour">km/h</string>
-    <string name="uv_index">uv index</string>
-    <string name="percentage">percentage %</string>
+    <string name="wind_speed_unit">km/h</string>
+    <string name="uv_unit">index</string>
+    <string name="humidity_unit">percentage %</string>
     <string name="feels_like_temperature_in_celsius">Feels like %1$s°C</string>
-    <string name="temperature_value_in_celsius">%1$s°C</string>
+    <string name="temperature_value_in_celsius">%1$s°</string>
     <string name="icon_url">https:%1$s</string>
     <string name="hour_temperature">%1$s°</string>
     <string name="hourly_weather_icon">https:%1$s</string>
+    <string name="humidity_label">humidity</string>
+    <string name="wind_speed_label">wind speed</string>
+    <string name="uv_index_label">uv</string>
 </resources>

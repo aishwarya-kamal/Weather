@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -87,10 +88,10 @@ private fun WeatherSuccessState(
         Spacer(Modifier.height(8.dp))
 
         AsyncImage(
-            modifier = Modifier.size(44.dp),
+            modifier = Modifier.size(64.dp),
             model = stringResource(
                 R.string.icon_url,
-                uiState.weather?.condition?.icon.toString()
+                uiState.weather?.condition?.icon.orEmpty()
             ),
             contentDescription = null,
             error = painterResource(id = R.drawable.ic_placeholder),
@@ -101,14 +102,21 @@ private fun WeatherSuccessState(
                 R.string.temperature_value_in_celsius,
                 uiState.weather?.temperature.toString()
             ),
-            style = MaterialTheme.typography.headlineMedium
+            style = MaterialTheme.typography.headlineLarge,
+            fontWeight = FontWeight.Bold,
         )
         Text(
+            modifier = Modifier.padding(start = 12.dp, end = 12.dp, bottom = 4.dp),
+            text = uiState.weather?.condition?.text.orEmpty(),
+            style = MaterialTheme.typography.bodyMedium,
+        )
+        Text(
+            modifier = Modifier.padding(bottom = 4.dp),
             text = stringResource(
                 R.string.feels_like_temperature_in_celsius,
                 uiState.weather?.feelsLike.toString()
             ),
-            style = MaterialTheme.typography.bodyMedium
+            style = MaterialTheme.typography.bodySmall
         )
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -136,30 +144,36 @@ private fun WeatherSuccessState(
         ) {
             WeatherComponent(
                 modifier = Modifier.weight(1f),
+                weatherLabel = stringResource(R.string.wind_speed_label),
                 weatherValue = uiState.weather?.wind.toString(),
-                weatherUnit = stringResource(R.string.kilometer_per_hour),
+                weatherUnit = stringResource(R.string.wind_speed_unit),
                 iconId = R.drawable.ic_wind,
             )
             WeatherComponent(
                 modifier = Modifier.weight(1f),
+                weatherLabel = stringResource(R.string.uv_index_label),
                 weatherValue = uiState.weather?.uv.toString(),
-                weatherUnit = stringResource(R.string.uv_index),
+                weatherUnit = stringResource(R.string.uv_unit),
                 iconId = R.drawable.ic_uv,
             )
             WeatherComponent(
                 modifier = Modifier.weight(1f),
+                weatherLabel = stringResource(R.string.humidity_label),
                 weatherValue = uiState.weather?.humidity.toString(),
-                weatherUnit = stringResource(R.string.percentage),
+                weatherUnit = stringResource(R.string.humidity_unit),
                 iconId = R.drawable.ic_humidity,
             )
         }
 
         Spacer(Modifier.height(32.dp))
-        Text(text = "Hourly Forecast")
-        Spacer(modifier = Modifier.height(12.dp))
-
+        Text(
+            text = "Hourly Forecast",
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = modifier.align(Alignment.Start),
+        )
         LazyRow(
-            contentPadding = PaddingValues(16.dp)
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(top = 8.dp),
         ) {
             uiState.weather?.forecasts?.get(0)?.let { forecast ->
                 items(forecast.hour) { hour ->
@@ -173,7 +187,11 @@ private fun WeatherSuccessState(
         }
 
         Spacer(Modifier.height(32.dp))
-        Text(text = "Next days")
+        Text(
+            text = "Next days",
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = modifier.align(Alignment.Start),
+        )
         Spacer(modifier = Modifier.height(12.dp))
 
         LazyRow {
@@ -222,7 +240,7 @@ fun WeatherScreenContentPreview() {
                         22,
                         35,
                         23,
-                        ForecastResponse.Current.Condition(10, "", ""),
+                        ForecastResponse.Current.Condition(10, "", "Cloudy"),
                         6,
                         "Munich",
                         listOf(

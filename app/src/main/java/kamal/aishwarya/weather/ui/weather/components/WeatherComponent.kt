@@ -22,6 +22,7 @@ import kamal.aishwarya.weather.R
 @Composable
 fun WeatherComponent(
     modifier: Modifier = Modifier,
+    weatherLabel: String,
     weatherValue: String,
     weatherUnit: String,
     iconId: Int,
@@ -38,6 +39,10 @@ fun WeatherComponent(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
+            Text(
+                text = weatherLabel,
+                style = MaterialTheme.typography.bodySmall,
+                )
             Image(
                 painter = painterResource(id = iconId),
                 contentDescription = null,
@@ -45,11 +50,11 @@ fun WeatherComponent(
             )
             Text(
                 text = weatherValue,
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
             )
             Text(
                 text = weatherUnit,
-                style = MaterialTheme.typography.bodySmall
+                style = MaterialTheme.typography.bodySmall,
             )
         }
     }
@@ -59,5 +64,5 @@ fun WeatherComponent(
 @Preview(uiMode = UI_MODE_NIGHT_YES)
 @Composable
 fun WeatherComponentPreview() {
-    WeatherComponent(weatherValue = "22", weatherUnit = "kmph", iconId = R.drawable.ic_wind)
+    WeatherComponent(weatherLabel = "wind speed", weatherValue = "22", weatherUnit = "kmph", iconId = R.drawable.ic_wind)
 }
