@@ -1,6 +1,6 @@
 package kamal.aishwarya.weather.model
 
-import kamal.aishwarya.weather.data.model.WeatherResponse.NetworkCurrentWeather.Condition
+import kamal.aishwarya.weather.data.model.ForecastResponse.Current.Condition
 
 data class Weather(
     val temperature: Int,
@@ -10,4 +10,5 @@ data class Weather(
     val condition: Condition,
     val uv: Int,
     val name: String,
+    val forecasts: List<Forecast>
 )
