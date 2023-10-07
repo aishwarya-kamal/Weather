@@ -1,4 +1,4 @@
-package kamal.aishwarya.weather.ui.weather.common
+package kamal.aishwarya.weather.ui.weather.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image

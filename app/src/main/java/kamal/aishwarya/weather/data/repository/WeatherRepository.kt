@@ -5,5 +5,5 @@ import kamal.aishwarya.weather.utils.Result
 import kotlinx.coroutines.flow.Flow
 
 interface WeatherRepository {
-    fun getWeather(): Flow<Result<Weather>>
+    fun getWeatherForecast(): Flow<Result<Weather>>
 }
