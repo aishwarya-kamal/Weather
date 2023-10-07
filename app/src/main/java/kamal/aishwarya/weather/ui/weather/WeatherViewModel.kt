@@ -10,8 +10,6 @@ import kamal.aishwarya.weather.data.repository.WeatherRepository
 import kamal.aishwarya.weather.utils.Result
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,7 +25,7 @@ class WeatherViewModel @Inject constructor(
     }
 
     private fun getWeather() {
-        repository.getWeather().map { result ->
+        repository.getWeatherForecast().map { result ->
             when (result) {
                 is Result.Success -> {
                     _uiState.value = WeatherUiState(weather = result.data)
