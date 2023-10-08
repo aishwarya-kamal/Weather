@@ -11,4 +11,7 @@
     <string name="icon_image_url">https:%1$s</string>
     <string name="today">Today</string>
     <string name="forecast">Forecast</string>
+    <string name="search_icon">Search Icon</string>
+    <string name="search_hint">Search for a city</string>
+    <string name="close_icon">Close Icon</string>
 </resources>
