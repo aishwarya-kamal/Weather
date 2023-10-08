@@ -83,4 +83,5 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.okhttp3.logging.interceptor)
     implementation(libs.coil)
+    implementation(libs.lottie)
 }

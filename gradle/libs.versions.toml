@@ -18,6 +18,7 @@ hilt-navigation-compose = "1.0.0"
 kotlin = "1.8.0"
 ksp = "1.9.0-1.0.13"
 coil = "2.4.0"
+lottie = "6.1.0"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -45,6 +46,7 @@ hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", vers
 hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
 coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+lottie = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie" }
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }
