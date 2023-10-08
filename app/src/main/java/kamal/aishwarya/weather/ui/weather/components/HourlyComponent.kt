@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import kamal.aishwarya.weather.R
+import kamal.aishwarya.weather.ui.theme.WeatherTheme
 
 @Composable
 fun HourlyComponent(
@@ -37,7 +39,7 @@ fun HourlyComponent(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 12.dp, horizontal = 4.dp),
+                .padding(vertical = 8.dp, horizontal = 4.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
@@ -62,14 +64,17 @@ fun HourlyComponent(
     }
 }
 
-
-@Preview(showSystemUi = true)
+@Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun HourlyComponentPreview() {
-    HourlyComponent(
-        time = "2023-10-07",
-        icon = "116.png",
-        temperature = "23",
-    )
+    Surface {
+        WeatherTheme {
+            HourlyComponent(
+                time = "2023-10-07 13:00",
+                icon = "116.png",
+                temperature = "23",
+            )
+        }
+    }
 }

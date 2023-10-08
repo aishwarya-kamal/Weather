@@ -15,8 +15,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
@@ -36,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -124,12 +127,13 @@ private fun WeatherSuccessState(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(vertical = 16.dp),
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
+            modifier = Modifier.padding(top = 12.dp),
             text = uiState.weather?.name.orEmpty(),
-            style = MaterialTheme.typography.headlineLarge
+            style = MaterialTheme.typography.headlineMedium
         )
         Text(
             text = uiState.weather?.date?.toFormattedDate().orEmpty(),
@@ -142,6 +146,7 @@ private fun WeatherSuccessState(
                 R.string.icon_image_url,
                 uiState.weather?.condition?.icon.orEmpty(),
             ),
+            contentScale = ContentScale.FillBounds,
             contentDescription = null,
             error = painterResource(id = R.drawable.ic_placeholder),
             placeholder = painterResource(id = R.drawable.ic_placeholder),
@@ -186,7 +191,7 @@ private fun WeatherSuccessState(
                 style = MaterialTheme.typography.bodySmall,
             )
         }
-        Spacer(Modifier.height(32.dp))
+        Spacer(Modifier.height(16.dp))
 
         Row(
             modifier = Modifier
@@ -216,7 +221,7 @@ private fun WeatherSuccessState(
             )
         }
 
-        Spacer(Modifier.height(32.dp))
+        Spacer(Modifier.height(16.dp))
         Text(
             text = stringResource(R.string.today),
             style = MaterialTheme.typography.bodyMedium,
@@ -242,7 +247,7 @@ private fun WeatherSuccessState(
             }
         }
 
-        Spacer(Modifier.height(32.dp))
+        Spacer(Modifier.height(16.dp))
         Text(
             text = stringResource(R.string.forecast),
             style = MaterialTheme.typography.bodyMedium,
@@ -272,6 +277,7 @@ private fun WeatherSuccessState(
                 }
             }
         }
+        Spacer(Modifier.height(16.dp))
     }
 }
 
