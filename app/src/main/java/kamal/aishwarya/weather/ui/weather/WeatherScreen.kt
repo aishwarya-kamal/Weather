@@ -17,9 +17,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -27,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Devices.PIXEL_XL
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -48,7 +53,19 @@ fun WeatherScreen(
     viewModel: WeatherViewModel = hiltViewModel(),
 ) {
     val uiState: WeatherUiState by viewModel.uiState
-    WeatherScreenContent(uiState, modifier)
+    Scaffold(
+        topBar = { WeatherTopAppBar() },
+        content = { paddingValues ->
+            Surface(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                WeatherScreenContent(uiState, modifier)
+            }
+        },
+    )
 }
 
 @Composable
@@ -238,12 +255,30 @@ private fun WeatherLoadingState() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun WeatherTopAppBar() {
+    TopAppBar(
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            titleContentColor = MaterialTheme.colorScheme.onBackground,
+        ),
+        title = {
+            Text(
+                text = stringResource(id = R.string.app_name),
+                fontWeight = FontWeight.Bold,
+            )
+        },
+    )
+}
+
 @Preview(name = "Light Mode", showBackground = true, showSystemUi = true)
 @Preview(
     name = "Dark Mode",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showSystemUi = true,
     showBackground = true,
+    device = PIXEL_XL
 )
 @Composable
 fun WeatherScreenContentPreview() {
@@ -261,7 +296,7 @@ fun WeatherScreenContentPreview() {
                         6,
                         "Munich",
                         listOf(
-                            Forecast("07/10",  "26", "11", "06:30 am", "06:22 pm", "", emptyList()),
+                            Forecast("07/10", "26", "11", "06:30 am", "06:22 pm", "", emptyList()),
                             Forecast("08/10", "23", "9", "06:35 am", "06:28 pm", "", emptyList()),
                             Forecast("09/10", "22", "10", "06:40 am", "06:32 pm", "", emptyList()),
                         )
