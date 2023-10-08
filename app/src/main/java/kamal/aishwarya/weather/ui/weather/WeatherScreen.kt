@@ -3,7 +3,6 @@ package kamal.aishwarya.weather.ui.weather
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -16,7 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -39,8 +37,10 @@ import coil.compose.AsyncImage
 import kamal.aishwarya.weather.R
 import kamal.aishwarya.weather.data.model.ForecastResponse
 import kamal.aishwarya.weather.model.Forecast
+import kamal.aishwarya.weather.model.Hour
 import kamal.aishwarya.weather.model.Weather
 import kamal.aishwarya.weather.ui.theme.WeatherTheme
+import kamal.aishwarya.weather.ui.weather.components.Animation
 import kamal.aishwarya.weather.ui.weather.components.ForecastComponent
 import kamal.aishwarya.weather.ui.weather.components.HourlyComponent
 import kamal.aishwarya.weather.ui.weather.components.WeatherComponent
@@ -62,7 +62,7 @@ fun WeatherScreen(
                     .padding(paddingValues),
                 color = MaterialTheme.colorScheme.background
             ) {
-                WeatherScreenContent(uiState, modifier)
+                WeatherScreenContent(uiState = uiState, modifier = modifier)
             }
         },
     )
@@ -75,11 +75,11 @@ fun WeatherScreenContent(
 ) {
     when {
         uiState.isLoading -> {
-            WeatherLoadingState()
+            Animation(modifier = Modifier.fillMaxSize(), animation = R.raw.animation_loading)
         }
 
         uiState.errorMessage.isNotEmpty() -> {
-            Text(text = "Something went wrong!")
+            Animation(modifier = Modifier.fillMaxSize(), animation = R.raw.animation_error)
         }
 
         else -> {
@@ -96,7 +96,7 @@ private fun WeatherSuccessState(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(start = 16.dp, top = 16.dp, bottom = 16.dp),
+            .padding(vertical = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
@@ -107,7 +107,6 @@ private fun WeatherSuccessState(
             text = uiState.weather?.date?.toFormattedDate().orEmpty(),
             style = MaterialTheme.typography.bodyLarge
         )
-        Spacer(Modifier.height(8.dp))
 
         AsyncImage(
             modifier = Modifier.size(64.dp),
@@ -162,7 +161,9 @@ private fun WeatherSuccessState(
         Spacer(Modifier.height(32.dp))
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp),
         ) {
             WeatherComponent(
                 modifier = Modifier.weight(1f),
@@ -189,13 +190,15 @@ private fun WeatherSuccessState(
 
         Spacer(Modifier.height(32.dp))
         Text(
-            text = "Hourly Forecast",
+            text = stringResource(R.string.today),
             style = MaterialTheme.typography.bodyMedium,
-            modifier = modifier.align(Alignment.Start),
+            modifier = modifier
+                .align(Alignment.Start)
+                .padding(horizontal = 16.dp),
         )
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(top = 8.dp),
+            contentPadding = PaddingValues(top = 8.dp, start = 16.dp),
         ) {
             uiState.weather?.forecasts?.get(0)?.let { forecast ->
                 items(forecast.hour) { hour ->
@@ -213,14 +216,16 @@ private fun WeatherSuccessState(
 
         Spacer(Modifier.height(32.dp))
         Text(
-            text = "10-days Forecast",
+            text = stringResource(R.string.forecast),
             style = MaterialTheme.typography.bodyMedium,
-            modifier = modifier.align(Alignment.Start),
+            modifier = modifier
+                .align(Alignment.Start)
+                .padding(horizontal = 16.dp),
         )
 
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(top = 8.dp),
+            contentPadding = PaddingValues(top = 8.dp, start = 16.dp),
         ) {
             uiState.weather?.let { weather ->
                 items(weather.forecasts) { forecast ->
@@ -239,19 +244,6 @@ private fun WeatherSuccessState(
                 }
             }
         }
-
-    }
-}
-
-@Composable
-private fun WeatherLoadingState() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator()
     }
 }
 
@@ -296,7 +288,15 @@ fun WeatherScreenContentPreview() {
                         6,
                         "Munich",
                         listOf(
-                            Forecast("07/10", "26", "11", "06:30 am", "06:22 pm", "", emptyList()),
+                            Forecast(
+                                "07/10",
+                                "26",
+                                "11",
+                                "06:30 am",
+                                "06:22 pm",
+                                "",
+                                listOf(Hour("2023-10-07 13:00", "", "23"))
+                            ),
                             Forecast("08/10", "23", "9", "06:35 am", "06:28 pm", "", emptyList()),
                             Forecast("09/10", "22", "10", "06:40 am", "06:32 pm", "", emptyList()),
                         )

@@ -9,4 +9,6 @@
     <string name="wind_speed_label">wind speed</string>
     <string name="uv_index_label">uv</string>
     <string name="icon_image_url">https:%1$s</string>
+    <string name="today">Today</string>
+    <string name="forecast">Forecast</string>
 </resources>
