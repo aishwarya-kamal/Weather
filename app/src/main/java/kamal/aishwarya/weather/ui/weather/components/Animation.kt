@@ -18,7 +18,8 @@ fun Animation(modifier: Modifier = Modifier, animation: Int) {
     val progress by animateLottieCompositionAsState(
         composition = composition,
         iterations = LottieConstants.IterateForever,
-        isPlaying = true
+        isPlaying = true,
+        speed = 2f,
     )
 
     LottieAnimation(
