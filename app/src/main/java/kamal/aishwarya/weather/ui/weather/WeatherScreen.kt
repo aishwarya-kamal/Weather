@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import kamal.aishwarya.weather.R
-import kamal.aishwarya.weather.data.model.ForecastResponse
+import kamal.aishwarya.weather.data.model.ForecastResponse.Current.Condition
 import kamal.aishwarya.weather.model.Forecast
 import kamal.aishwarya.weather.model.Hour
 import kamal.aishwarya.weather.model.Weather
@@ -46,6 +46,7 @@ import kamal.aishwarya.weather.ui.weather.components.HourlyComponent
 import kamal.aishwarya.weather.ui.weather.components.WeatherComponent
 import kamal.aishwarya.weather.utils.toFormattedDate
 import java.util.Locale
+import kotlin.random.Random
 
 @Composable
 fun WeatherScreen(
@@ -274,32 +275,28 @@ fun WeatherTopAppBar() {
 )
 @Composable
 fun WeatherScreenContentPreview() {
+    val hourlyForecast = mutableListOf<Hour>()
+    for (i in 0 until 24) {
+        hourlyForecast.add(Hour("yyyy-mm-dd ${String.format("%02d", i)}", "", "${Random.nextInt(18, 21)}"))
+    }
+    val forecasts = mutableListOf<Forecast>()
+    for (i in 0..9) {
+        forecasts.add(Forecast("2023-10-${String.format("%02d", i)}", "${Random.nextInt(18, 21)}", "${Random.nextInt(10, 15)}", "07:20 am", "06:40 pm", "", hourlyForecast))
+    }
     WeatherTheme {
         Surface {
             WeatherScreenContent(
                 WeatherUiState(
-                    weather = Weather(
-                        25,
-                        "Oct 7",
-                        22,
-                        35,
-                        23,
-                        ForecastResponse.Current.Condition(10, "", "Cloudy"),
-                        6,
-                        "Munich",
-                        listOf(
-                            Forecast(
-                                "07/10",
-                                "26",
-                                "11",
-                                "06:30 am",
-                                "06:22 pm",
-                                "",
-                                listOf(Hour("2023-10-07 13:00", "", "23"))
-                            ),
-                            Forecast("08/10", "23", "9", "06:35 am", "06:28 pm", "", emptyList()),
-                            Forecast("09/10", "22", "10", "06:40 am", "06:32 pm", "", emptyList()),
-                        )
+                    Weather(
+                        temperature = 19,
+                        date = "Oct 7",
+                        wind = 22,
+                        humidity = 35,
+                        feelsLike = 18,
+                        condition = Condition(10, "", "Cloudy"),
+                        uv = 2,
+                        name = "Munich",
+                        forecasts = forecasts,
                     )
                 )
             )
