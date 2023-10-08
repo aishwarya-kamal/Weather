@@ -21,7 +21,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -45,6 +47,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices.PIXEL_XL
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -93,7 +96,7 @@ fun WeatherScreen(
                     .padding(paddingValues),
                 color = MaterialTheme.colorScheme.background
             ) {
-                WeatherScreenContent(uiState = uiState, modifier = modifier)
+                WeatherScreenContent(uiState = uiState, modifier = modifier, viewModel = viewModel)
             }
         },
     )
@@ -103,6 +106,7 @@ fun WeatherScreen(
 fun WeatherScreenContent(
     uiState: WeatherUiState,
     modifier: Modifier = Modifier,
+    viewModel: WeatherViewModel?,
 ) {
     when {
         uiState.isLoading -> {
@@ -110,12 +114,55 @@ fun WeatherScreenContent(
         }
 
         uiState.errorMessage.isNotEmpty() -> {
-            Animation(modifier = Modifier.fillMaxSize(), animation = R.raw.animation_error)
+            WeatherErrorState(uiState = uiState, viewModel = viewModel)
         }
 
         else -> {
             WeatherSuccessState(modifier = modifier, uiState = uiState)
         }
+    }
+}
+
+@Composable
+private fun WeatherErrorState(
+    modifier: Modifier = Modifier,
+    uiState: WeatherUiState,
+    viewModel: WeatherViewModel?,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Animation(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(8f),
+            animation = R.raw.animation_error,
+        )
+
+        Button(onClick = { viewModel?.getWeather() }) {
+            Icon(
+                imageVector = Icons.Filled.Refresh,
+                contentDescription = "Retry",
+            )
+            Text(
+                modifier = Modifier.padding(horizontal = 8.dp),
+                style = MaterialTheme.typography.titleMedium,
+                text = stringResource(R.string.retry),
+                fontWeight = FontWeight.Bold,
+            )
+        }
+
+        Text(
+            modifier = modifier
+                .weight(2f)
+                .alpha(0.5f)
+                .padding(horizontal = 16.dp, vertical = 16.dp),
+            text = "Something went wrong: ${uiState.errorMessage}",
+            textAlign = TextAlign.Center,
+        )
     }
 }
 
@@ -329,8 +376,8 @@ fun WeatherScreenContentPreview() {
                         uv = 2,
                         name = "Munich",
                         forecasts = forecasts,
-                    )
-                )
+                    ),
+                ), viewModel = null
             )
         }
     }

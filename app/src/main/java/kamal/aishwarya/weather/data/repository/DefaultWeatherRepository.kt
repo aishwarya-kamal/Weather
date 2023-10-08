@@ -19,11 +19,9 @@ class DefaultWeatherRepository @Inject constructor(
             val result = weatherApi.getWeatherForecast(city = city).toWeather()
             emit(Result.Success(result))
         } catch (exception: HttpException) {
-            emit(Result.Error(exception))
+            emit(Result.Error(exception.message.orEmpty()))
         } catch (exception: IOException) {
-            emit(Result.Error(exception))
-        } catch (exception: Exception) {
-            emit(Result.Error(exception))
+            emit(Result.Error("Please check your network connection and try again!"))
         }
     }
 }

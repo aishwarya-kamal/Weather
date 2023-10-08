@@ -24,6 +24,6 @@ fun Animation(modifier: Modifier = Modifier, animation: Int) {
     LottieAnimation(
         composition = composition,
         progress = { progress },
-        modifier = modifier
+        modifier = modifier,
     )
 }

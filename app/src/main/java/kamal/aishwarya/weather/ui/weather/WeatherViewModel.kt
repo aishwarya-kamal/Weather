@@ -46,7 +46,7 @@ class WeatherViewModel @Inject constructor(
                     _uiState.value = WeatherUiState(weather = result.data)
                 }
                 is Result.Error -> {
-                    _uiState.value = WeatherUiState(errorMessage = result.exception.toString())
+                    _uiState.value = WeatherUiState(errorMessage = result.errorMessage)
                 }
                 Result.Loading -> {
                     _uiState.value = WeatherUiState(isLoading = true)
