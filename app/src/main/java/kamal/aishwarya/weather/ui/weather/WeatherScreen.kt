@@ -52,6 +52,7 @@ import androidx.compose.ui.tooling.preview.Devices.PIXEL_XL
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import kamal.aishwarya.weather.R
 import kamal.aishwarya.weather.data.model.ForecastResponse.Current.Condition
@@ -74,7 +75,7 @@ fun WeatherScreen(
 ) {
     val searchWidgetState by viewModel.searchWidgetState
     val searchTextState by viewModel.searchTextState
-    val uiState: WeatherUiState by viewModel.uiState
+    val uiState: WeatherUiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {

@@ -9,6 +9,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kamal.aishwarya.weather.data.repository.WeatherRepository
 import kamal.aishwarya.weather.utils.DEFAULT_WEATHER_DESTINATION
 import kamal.aishwarya.weather.utils.Result
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -18,8 +21,8 @@ class WeatherViewModel @Inject constructor(
     private val repository: WeatherRepository,
 ) : ViewModel() {
 
-    private val _uiState: MutableState<WeatherUiState> = mutableStateOf(WeatherUiState())
-    val uiState: State<WeatherUiState> = _uiState
+    private val _uiState: MutableStateFlow<WeatherUiState> = MutableStateFlow(WeatherUiState(isLoading = true))
+    val uiState: StateFlow<WeatherUiState> = _uiState.asStateFlow()
 
     private val _searchWidgetState: MutableState<SearchWidgetState> =
         mutableStateOf(value = SearchWidgetState.CLOSED)
