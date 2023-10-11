@@ -85,4 +85,8 @@ dependencies {
     implementation(libs.okhttp3.logging.interceptor)
     implementation(libs.coil)
     implementation(libs.lottie)
+    implementation(libs.lifecycle.runtime.compose)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.androidx.core.testing)
+    testImplementation(libs.kotlinx.coroutines.test)
 }
