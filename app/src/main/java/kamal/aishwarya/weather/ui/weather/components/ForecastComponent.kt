@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import kamal.aishwarya.weather.R
 import kamal.aishwarya.weather.ui.theme.WeatherTheme
-import kamal.aishwarya.weather.utils.toFormattedDay
+import kamal.aishwarya.weather.utils.DateUtil.toFormattedDay
 
 @Composable
 fun ForecastComponent(

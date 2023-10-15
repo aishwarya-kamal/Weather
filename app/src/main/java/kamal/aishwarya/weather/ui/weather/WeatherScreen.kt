@@ -64,7 +64,7 @@ import kamal.aishwarya.weather.ui.weather.components.Animation
 import kamal.aishwarya.weather.ui.weather.components.ForecastComponent
 import kamal.aishwarya.weather.ui.weather.components.HourlyComponent
 import kamal.aishwarya.weather.ui.weather.components.WeatherComponent
-import kamal.aishwarya.weather.utils.toFormattedDate
+import kamal.aishwarya.weather.utils.DateUtil.toFormattedDate
 import java.util.Locale
 import kotlin.random.Random
 
