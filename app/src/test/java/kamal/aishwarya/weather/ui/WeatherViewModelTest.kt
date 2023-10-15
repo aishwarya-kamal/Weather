@@ -1,36 +1,49 @@
 package kamal.aishwarya.weather.ui
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import kamal.aishwarya.weather.data.repository.DefaultWeatherRepository
+import app.cash.turbine.test
+import junit.framework.TestCase.assertEquals
+import kamal.aishwarya.weather.data.repository.FakeWeatherRepository
+import kamal.aishwarya.weather.data.repository.WeatherRepository
+import kamal.aishwarya.weather.data.repository.fakeWeather
 import kamal.aishwarya.weather.ui.weather.WeatherUiState
 import kamal.aishwarya.weather.ui.weather.WeatherViewModel
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito.mock
-import org.mockito.kotlin.whenever
-import java.io.IOException
 
 class WeatherViewModelTest {
 
     @get:Rule
-    val coroutineRule = InstantTaskExecutorRule()
+    val mainDispatcherRule = MainDispatcherRule()
 
     private lateinit var viewModel: WeatherViewModel
 
-    private val mockWeatherRepository: DefaultWeatherRepository = mock()
+    private val weatherRepository: WeatherRepository = FakeWeatherRepository
+
     @Before
     fun setUp() {
-        viewModel = WeatherViewModel(mockWeatherRepository)
+        viewModel = WeatherViewModel(weatherRepository)
     }
 
     @Test
-    fun ` some test`() {
-        whenever(mockWeatherRepository.getWeatherForecast("Munich")).thenThrow(IOException("No internt"))
+    fun `when getWeather completes, it should emit success state`() = runTest {
+        // Start observing the uiState flow
+        viewModel.uiState.test {
 
-        viewModel.getWeather()
-
-        assert(viewModel.uiState.value is WeatherUiState)
+            // Assert that the state is success
+            assertEquals(WeatherUiState(weather = fakeWeather), awaitItem())
+        }
     }
 
+    @Test
+    fun `when getWeather completes, it should emit success state with humidity of 50`() = runTest {
+        // Start observing the uiState flow
+        viewModel.uiState.test {
+
+            // Assert that the state is success
+            assertEquals(WeatherUiState(weather = fakeWeather), awaitItem())
+            assertEquals(WeatherUiState(weather = fakeWeather).weather?.humidity, 60)
+        }
+    }
 }
