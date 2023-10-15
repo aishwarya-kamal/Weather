@@ -86,7 +86,8 @@ dependencies {
     implementation(libs.coil)
     implementation(libs.lottie)
     implementation(libs.lifecycle.runtime.compose)
-    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockk)
+    testImplementation(libs.turbine)
     testImplementation(libs.androidx.core.testing)
     testImplementation(libs.kotlinx.coroutines.test)
 }

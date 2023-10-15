@@ -21,7 +21,8 @@ lottie = "6.1.0"
 lifecycle-runtime-compose = "2.6.2"
 core-testing = "2.2.0"
 kotlinx-coroutines-test = "1.7.3"
-mockito-core = "5.3.1"
+mockk = "1.13.8"
+turbine = "1.0.0"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -50,9 +51,10 @@ hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", ve
 coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 lottie = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie" }
 lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle-runtime-compose" }
-mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito-core" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines-test" }
 androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "core-testing" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }
