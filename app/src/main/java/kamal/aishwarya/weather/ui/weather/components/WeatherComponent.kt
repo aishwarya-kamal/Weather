@@ -35,14 +35,16 @@ fun WeatherComponent(
         ),
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
             Text(
                 text = weatherLabel,
                 style = MaterialTheme.typography.bodySmall,
-                )
+            )
             Image(
                 painter = painterResource(id = iconId),
                 contentDescription = null,
@@ -63,5 +65,10 @@ fun WeatherComponent(
 @Preview(uiMode = UI_MODE_NIGHT_YES)
 @Composable
 fun WeatherComponentPreview() {
-    WeatherComponent(weatherLabel = "wind speed", weatherValue = "22", weatherUnit = "km/h", iconId = R.drawable.ic_wind)
+    WeatherComponent(
+        weatherLabel = "wind speed",
+        weatherValue = "22",
+        weatherUnit = "km/h",
+        iconId = R.drawable.ic_wind
+    )
 }
