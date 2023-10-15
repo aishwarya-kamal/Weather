@@ -28,20 +28,16 @@ class WeatherViewModelTest {
 
     @Test
     fun `when getWeather completes, it should emit success state`() = runTest {
-        // Start observing the uiState flow
         viewModel.uiState.test {
 
-            // Assert that the state is success
             assertEquals(WeatherUiState(weather = fakeWeather), awaitItem())
         }
     }
 
     @Test
-    fun `when getWeather completes, it should emit success state with humidity of 50`() = runTest {
-        // Start observing the uiState flow
+    fun `when getWeather completes, it should emit success state with humidity of 60`() = runTest {
         viewModel.uiState.test {
 
-            // Assert that the state is success
             assertEquals(WeatherUiState(weather = fakeWeather), awaitItem())
             assertEquals(WeatherUiState(weather = fakeWeather).weather?.humidity, 60)
         }
